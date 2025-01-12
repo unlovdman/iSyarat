@@ -34,3 +34,40 @@ Route::get('/settings', function () {
 Route::get('/roadmap', function () {
     return Inertia::render('Roadmap');
 })->name('roadmap');
+
+// Add new route for beginner's practice
+Route::get('/latihan-pemula', function () {
+    return Inertia::render('LatihanPemula');
+})->name('latihan-pemula');
+
+// Add statistics routes
+Route::get('/api/stats/current-session', function () {
+    $sessionId = request()->query('session_id');
+    $filename = storage_path("app/public/sessions/session_{$sessionId}.json");
+    
+    if (file_exists($filename)) {
+        return response()->json(json_decode(file_get_contents($filename)));
+    }
+    
+    return response()->json(['error' => 'Session not found'], 404);
+});
+
+Route::get('/api/stats/history', function () {
+    $filename = storage_path('app/public/recognition_stats.json');
+    
+    if (file_exists($filename)) {
+        return response()->json(json_decode(file_get_contents($filename)));
+    }
+    
+    return response()->json(['error' => 'No history found'], 404);
+});
+
+Route::get('/api/words/history', function () {
+    $filename = storage_path('app/public/detected_words.json');
+    
+    if (file_exists($filename)) {
+        return response()->json(json_decode(file_get_contents($filename)));
+    }
+    
+    return response()->json(['error' => 'No word history found'], 404);
+});

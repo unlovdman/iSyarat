@@ -1,96 +1,80 @@
-import React from "react";
-import MainLayout from "../Layouts/MainLayout";
-import { useTheme } from "../Contexts/ThemeContext";
-import { useLanguage } from "../Contexts/LanguageContext";
+import React, { useState, useEffect } from 'react';
+import MainLayout from '../Layouts/MainLayout';
 
 export default function Settings() {
-    const { theme, colorScheme, toggleTheme, changeColorScheme, themes, colorSchemes } = useTheme();
-    const { language, changeLanguage, t } = useLanguage();
+    const [devices, setDevices] = useState([]);
+    const [selectedDevice, setSelectedDevice] = useState(localStorage.getItem('selectedCamera') || '');
+    const [error, setError] = useState(null);
 
-    const themeColors = {
-        default: t.blue,
-        galaxy: t.galaxy,
-        ocean: t.ocean,
-        sunset: t.sunset,
-        forest: t.forest
-    };
+    useEffect(() => {
+        // Get list of video input devices
+        const getDevices = async () => {
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                setDevices(videoDevices);
+                
+                // If no camera is selected, select the first one
+                if (!selectedDevice && videoDevices.length > 0) {
+                    setSelectedDevice(videoDevices[0].deviceId);
+                    localStorage.setItem('selectedCamera', videoDevices[0].deviceId);
+                }
+            } catch (err) {
+                setError('Gagal mendapatkan daftar kamera. ' + err.message);
+            }
+        };
 
-    const languages = {
-        en: 'English',
-        id: 'Bahasa Indonesia'
+        getDevices();
+    }, []);
+
+    const handleDeviceChange = (deviceId) => {
+        setSelectedDevice(deviceId);
+        localStorage.setItem('selectedCamera', deviceId);
     };
 
     return (
         <MainLayout>
-            <div className={`${themes[theme].card} rounded-lg shadow-lg p-6 max-w-2xl mx-auto`}>
-                <h1 className={`text-2xl font-bold mb-6 ${themes[theme].text}`}>{t.settings}</h1>
+            <div className="max-w-5xl mx-auto">
+                <div className="bg-white rounded-lg shadow-sm p-6">
+                    <h1 className="text-3xl font-bold text-gray-800 mb-6">Pengaturan</h1>
 
-                {/* Language Settings */}
-                <div className="mb-8">
-                    <h2 className={`text-xl font-semibold mb-4 ${themes[theme].text}`}>{t.language}</h2>
-                    <div className="grid grid-cols-2 gap-4">
-                        {Object.entries(languages).map(([code, name]) => (
-                            <button
-                                key={code}
-                                onClick={() => changeLanguage(code)}
-                                className={`p-4 rounded-lg border-2 transition-all ${
-                                    language === code
-                                        ? `${colorSchemes[colorScheme].accent} border-current`
-                                        : 'border-gray-200 dark:border-gray-700'
-                                } ${themes[theme].text} ${themes[theme].card}`}
-                            >
-                                {name}
-                            </button>
-                        ))}
-                    </div>
-                </div>
+                    <div className="space-y-6">
+                        <div className="bg-gray-50 p-6 rounded-lg">
+                            <h2 className="text-xl font-semibold text-gray-800 mb-4">Pengaturan Kamera</h2>
+                            
+                            {error ? (
+                                <div className="bg-red-50 text-red-600 p-4 rounded mb-4">
+                                    {error}
+                                </div>
+                            ) : null}
 
-                {/* Appearance Settings */}
-                <div className="mb-8">
-                    <h2 className={`text-xl font-semibold mb-4 ${themes[theme].text}`}>{t.appearance}</h2>
-                    
-                    {/* Mode Toggle */}
-                    <div className="mb-6">
-                        <h3 className={`text-lg font-medium mb-3 ${themes[theme].text}`}>{t.mode}</h3>
-                        <button
-                            onClick={toggleTheme}
-                            className={`w-full p-4 rounded-lg border-2 transition-all ${themes[theme].text} ${themes[theme].card} ${
-                                theme === 'dark' ? `${colorSchemes[colorScheme].accent} border-current` : 'border-gray-200'
-                            }`}
-                        >
-                            <div className="flex items-center justify-between">
-                                <span>{theme === 'light' ? t.light : t.dark}</span>
-                                {theme === 'light' ? (
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                                    </svg>
-                                ) : (
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                                    </svg>
-                                )}
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Pilih Kamera
+                                    </label>
+                                    <select
+                                        value={selectedDevice}
+                                        onChange={(e) => handleDeviceChange(e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    >
+                                        {devices.map((device) => (
+                                            <option key={device.deviceId} value={device.deviceId}>
+                                                {device.label || `Kamera ${devices.indexOf(device) + 1}`}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="bg-yellow-50 p-4 rounded">
+                                    <h3 className="text-sm font-medium text-yellow-800 mb-2">Catatan:</h3>
+                                    <ul className="list-disc list-inside text-sm text-yellow-700 space-y-1">
+                                        <li>Pastikan browser memiliki izin untuk mengakses kamera</li>
+                                        <li>Beberapa kamera mungkin memerlukan driver tambahan</li>
+                                        <li>Perubahan kamera akan berlaku setelah memuat ulang halaman</li>
+                                    </ul>
+                                </div>
                             </div>
-                        </button>
-                    </div>
-
-                    {/* Theme Selection */}
-                    <div>
-                        <h3 className={`text-lg font-medium mb-3 ${themes[theme].text}`}>{t.theme}</h3>
-                        <div className="grid grid-cols-2 gap-4">
-                            {Object.entries(themeColors).map(([key, label]) => (
-                                <button
-                                    key={key}
-                                    onClick={() => changeColorScheme(key)}
-                                    className={`p-4 rounded-lg border-2 transition-all ${
-                                        colorScheme === key
-                                            ? `${colorSchemes[colorScheme].accent} border-current`
-                                            : 'border-gray-200 dark:border-gray-700'
-                                    } ${themes[theme].text} ${themes[theme].card}`}
-                                >
-                                    <div className={`h-2 rounded bg-gradient-to-r ${colorSchemes[key].primary} mb-2`} />
-                                    {label}
-                                </button>
-                            ))}
                         </div>
                     </div>
                 </div>
