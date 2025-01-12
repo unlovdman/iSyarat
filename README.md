@@ -2,6 +2,10 @@
 
 <div align="center">
 
+> 🇮🇩 Proyek ini merupakan pengembangan dari versi sebelumnya ([IWTKLaUAaY](https://github.com/unlovdman/IwtklauaaY.git)) yang dibuat dengan tujuan memudahkan komunikasi antara semua orang tanpa terkecuali, menghapus batasan bahasa isyarat dalam interaksi sehari-hari.
+>
+> 🇬🇧 This project is an enhancement of the previous version ([IWTKLaUAaY](https://github.com/unlovdman/IwtklauaaY.git)) created to facilitate communication between all people without exception, removing sign language barriers in daily interactions.
+
 [🌐 Select Language | Pilih Bahasa | 言語選択 | Выбрать язык | Sprache wählen | 언어 선택 | 选择语言]
 
 <details>
