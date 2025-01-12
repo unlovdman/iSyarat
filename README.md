@@ -46,51 +46,51 @@ iSyarat adalah aplikasi web untuk pengenalan bahasa isyarat BISINDO (Bahasa Isya
 
 ### 1. Clone Repository
 ```bash
-# Clone repository dan masuk ke direktori proyek
-git clone https://github.com/yourusername/iSyarat.git
-cd iSyarat
+    # Clone repository dan masuk ke direktori proyek
+    git clone https://github.com/yourusername/iSyarat.git
+    cd iSyarat
 ```
 
 ### 2. Setup Laravel
 ```bash
-# Install dependencies PHP
-composer install
+    # Install dependencies PHP
+    composer install
 
-# Copy file environment
-cp .env.example .env
+    # Copy file environment
+    cp .env.example .env
 
-# Generate application key
-php artisan key:generate
+    # Generate application key
+    php artisan key:generate
 ```
 
 ```bash
-# Install dependencies Node.js dan build assets
-npm install
-npm run dev
+    # Install dependencies Node.js dan build assets
+    npm install
+    npm run dev
 ```
 
 ### 3. Setup Python
 ```bash
-# Buat virtual environment
-python -m venv venv
+    # Buat virtual environment
+    python -m venv venv
 
-# Aktifkan virtual environment
-# Untuk Windows
-.\venv\Scripts\activate
-# Untuk Linux/Mac
-source venv/bin/activate
+    # Aktifkan virtual environment
+    # Untuk Windows
+    .\venv\Scripts\activate
+    # Untuk Linux/Mac
+    source venv/bin/activate
 
-# Install dependencies Python
-pip install -r requirements.txt
+    # Install dependencies Python
+    pip install -r requirements.txt
 ```
 
 ### 4. Konfigurasi Storage
 ```bash
-# Buat symbolic link untuk storage
-php artisan storage:link
+    # Buat symbolic link untuk storage
+    php artisan storage:link
 
-# Buat direktori untuk menyimpan data
-mkdir -p storage/app/public/sessions
+    # Buat direktori untuk menyimpan data
+    mkdir -p storage/app/public/sessions
 ```
 
 ### 5. Jalankan Aplikasi
@@ -98,23 +98,23 @@ mkdir -p storage/app/public/sessions
 Buka 3 terminal terpisah dan jalankan perintah berikut:
 
 ```bash
-# Terminal 1: Jalankan server Laravel
-php artisan serve
+    # Terminal 1: Jalankan server Laravel
+    php artisan serve
 ```
 
 ```bash
-# Terminal 2: Jalankan server WebSocket Python
-python python/websocket_server.py
+    # Terminal 2: Jalankan server WebSocket Python
+    python python/websocket_server.py
 ```
 
 ```bash
-# Terminal 3: Jalankan Vite development server
-npm run dev
+    # Terminal 3: Jalankan Vite development server
+    npm run dev
 ```
 
 Setelah semua server berjalan, buka aplikasi di browser:
 ```
-http://localhost:8000
+    http://localhost:8000
 ```
 
 ## Penggunaan
@@ -206,74 +206,75 @@ iSyarat is a web application for BISINDO (Indonesian Sign Language) recognition 
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/yourusername/iSyarat.git
-cd iSyarat
+    # Clone the repository and enter the project directory
+    git clone https://github.com/yourusername/iSyarat.git
+    cd iSyarat
 ```
 
 ### 2. Laravel Setup
 ```bash
-# Install dependencies PHP
-composer install
+    # Install PHP dependencies
+    composer install
 
-# Copy environment file
-cp .env.example .env
+    # Copy environment file
+    cp .env.example .env
 
-# Generate application key
-php artisan key:generate
+    # Generate application key
+    php artisan key:generate
+```
 
-# Install dependencies Node.js
-npm install
-
-# Build assets
-npm run dev
+```bash
+    # Install Node.js dependencies and build assets
+    npm install
+    npm run dev
 ```
 
 ### 3. Python Setup
 ```bash
-# Create virtual environment
-python -m venv venv
+    # Create virtual environment
+    python -m venv venv
 
-# Activate virtual environment
-# Windows
-venv\Scripts\activate
-# Linux/Mac
-source venv/bin/activate
+    # Activate virtual environment
+    # For Windows
+    .\venv\Scripts\activate
+    # For Linux/Mac
+    source venv/bin/activate
 
-# Install Python dependencies
-pip install -r requirements.txt
+    # Install Python dependencies
+    pip install -r requirements.txt
 ```
 
 ### 4. Storage Configuration
 ```bash
-# Create storage symbolic link
-php artisan storage:link
+    # Create storage symbolic link
+    php artisan storage:link
 
-# Create directory for data storage
-mkdir -p storage/app/public/sessions
+    # Create directory for data storage
+    mkdir -p storage/app/public/sessions
 ```
 
 ### 5. Run Application
 
-1. Start Laravel server:
+Open 3 separate terminals and run the following commands:
+
 ```bash
-php artisan serve
+    # Terminal 1: Start Laravel server
+    php artisan serve
 ```
 
-2. Start Python WebSocket server:
 ```bash
-# In separate terminal
-python python/websocket_server.py
+    # Terminal 2: Start Python WebSocket server
+    python python/websocket_server.py
 ```
 
-3. Start Vite development server:
 ```bash
-# In separate terminal
-npm run dev
+    # Terminal 3: Start Vite development server
+    npm run dev
 ```
 
-4. Open application in browser:
+After all servers are running, open the application in your browser:
 ```
-http://localhost:8000
+    http://localhost:8000
 ```
 
 ## Usage
