@@ -46,6 +46,7 @@ iSyarat adalah aplikasi web untuk pengenalan bahasa isyarat BISINDO (Bahasa Isya
 
 ### 1. Clone Repository
 ```bash
+# Clone repository dan masuk ke direktori proyek
 git clone https://github.com/yourusername/iSyarat.git
 cd iSyarat
 ```
@@ -60,11 +61,11 @@ cp .env.example .env
 
 # Generate application key
 php artisan key:generate
+```
 
-# Install dependencies Node.js
+```bash
+# Install dependencies Node.js dan build assets
 npm install
-
-# Build assets
 npm run dev
 ```
 
@@ -74,9 +75,9 @@ npm run dev
 python -m venv venv
 
 # Aktifkan virtual environment
-# Windows
-venv\Scripts\activate
-# Linux/Mac
+# Untuk Windows
+.\venv\Scripts\activate
+# Untuk Linux/Mac
 source venv/bin/activate
 
 # Install dependencies Python
@@ -94,24 +95,24 @@ mkdir -p storage/app/public/sessions
 
 ### 5. Jalankan Aplikasi
 
-1. Jalankan server Laravel:
+Buka 3 terminal terpisah dan jalankan perintah berikut:
+
 ```bash
+# Terminal 1: Jalankan server Laravel
 php artisan serve
 ```
 
-2. Jalankan server WebSocket Python:
 ```bash
-# Di terminal terpisah
+# Terminal 2: Jalankan server WebSocket Python
 python python/websocket_server.py
 ```
 
-3. Jalankan Vite development server:
 ```bash
-# Di terminal terpisah
+# Terminal 3: Jalankan Vite development server
 npm run dev
 ```
 
-4. Buka aplikasi di browser:
+Setelah semua server berjalan, buka aplikasi di browser:
 ```
 http://localhost:8000
 ```
@@ -211,7 +212,7 @@ cd iSyarat
 
 ### 2. Laravel Setup
 ```bash
-# Install PHP dependencies
+# Install dependencies PHP
 composer install
 
 # Copy environment file
@@ -220,7 +221,7 @@ cp .env.example .env
 # Generate application key
 php artisan key:generate
 
-# Install Node.js dependencies
+# Install dependencies Node.js
 npm install
 
 # Build assets
