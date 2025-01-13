@@ -1,9 +1,10 @@
 import React from 'react';
 import MainLayout from '../Layouts/MainLayout';
-import { useTheme } from '../Contexts/ThemeContext';
+import { useContext } from 'react';
+import { ThemeContext } from '../Contexts/ThemeContext';
 
 export default function Roadmap() {
-    const { theme, themes } = useTheme();
+    const { theme } = useContext(ThemeContext);
 
     const roadmapData = [
         {
@@ -62,11 +63,11 @@ export default function Roadmap() {
     return (
         <MainLayout>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className={`${themes[theme].card} rounded-xl shadow-lg p-6 mb-8`}>
-                    <h1 className={`text-3xl font-bold mb-4 ${themes[theme].text}`}>
+                <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6 mb-8`}>
+                    <h1 className={`text-3xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}>
                         Roadmap Pembelajaran
                     </h1>
-                    <p className={`text-lg mb-8 ${themes[theme].text}`}>
+                    <p className={`text-lg mb-8 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-600'}`}>
                         Ikuti panduan belajar sistematis ini untuk menguasai bahasa isyarat dari tingkat pemula hingga mahir.
                     </p>
 
@@ -74,7 +75,7 @@ export default function Roadmap() {
                         {roadmapData.map((level, index) => (
                             <div
                                 key={level.level}
-                                className={`relative ${themes[theme].card} rounded-lg p-6 shadow-md transition-transform hover:scale-[1.02]`}
+                                className={`relative ${theme === 'dark' ? 'bg-gray-700' : 'bg-white'} rounded-lg p-6 shadow-md transition-transform hover:scale-[1.02]`}
                                 data-aos="fade-up"
                                 data-aos-delay={index * 100}
                             >
@@ -98,14 +99,14 @@ export default function Roadmap() {
 
                                 {/* Content */}
                                 <div className="mt-6">
-                                    <p className={`text-lg mb-6 ${themes[theme].text}`}>
+                                    <p className={`text-lg mb-6 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-600'}`}>
                                         {level.description}
                                     </p>
 
                                     <div className="grid md:grid-cols-2 gap-6">
                                         {/* Topics */}
                                         <div>
-                                            <h3 className={`text-lg font-semibold mb-4 ${themes[theme].text}`}>
+                                            <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}>
                                                 Topik Pembelajaran
                                             </h3>
                                             <ul className="space-y-3">
@@ -114,7 +115,7 @@ export default function Roadmap() {
                                                         <svg className="w-5 h-5 text-blue-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                         </svg>
-                                                        <span className={`${themes[theme].text}`}>{topic}</span>
+                                                        <span className={`${theme === 'dark' ? 'text-gray-200' : 'text-gray-600'}`}>{topic}</span>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -122,7 +123,7 @@ export default function Roadmap() {
 
                                         {/* Skills */}
                                         <div>
-                                            <h3 className={`text-lg font-semibold mb-4 ${themes[theme].text}`}>
+                                            <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}>
                                                 Kemampuan yang Diperoleh
                                             </h3>
                                             <ul className="space-y-3">
@@ -131,7 +132,7 @@ export default function Roadmap() {
                                                         <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                                         </svg>
-                                                        <span className={`${themes[theme].text}`}>{skill}</span>
+                                                        <span className={`${theme === 'dark' ? 'text-gray-200' : 'text-gray-600'}`}>{skill}</span>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -144,32 +145,32 @@ export default function Roadmap() {
                 </div>
 
                 {/* Progress Tracking */}
-                <div className={`${themes[theme].card} rounded-xl shadow-lg p-6`}>
-                    <h2 className={`text-2xl font-bold mb-6 ${themes[theme].text}`}>
+                <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl shadow-lg p-6`}>
+                    <h2 className={`text-2xl font-bold mb-6 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}>
                         Pantau Kemajuan Anda
                     </h2>
                     <div className="grid md:grid-cols-3 gap-6">
-                        <div className={`${themes[theme].card} rounded-lg p-6 shadow-md border border-green-200`}>
+                        <div className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-white'} rounded-lg p-6 shadow-md border ${theme === 'dark' ? 'border-green-800' : 'border-green-200'}`}>
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className={`text-lg font-semibold ${themes[theme].text}`}>Pemula</h3>
+                                <h3 className={`text-lg font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}>Pemula</h3>
                                 <span className="text-green-600 text-sm font-medium">60% Selesai</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2.5">
                                 <div className="bg-green-600 h-2.5 rounded-full" style={{ width: '60%' }}></div>
                             </div>
                         </div>
-                        <div className={`${themes[theme].card} rounded-lg p-6 shadow-md border border-blue-200`}>
+                        <div className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-white'} rounded-lg p-6 shadow-md border ${theme === 'dark' ? 'border-blue-800' : 'border-blue-200'}`}>
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className={`text-lg font-semibold ${themes[theme].text}`}>Menengah</h3>
+                                <h3 className={`text-lg font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}>Menengah</h3>
                                 <span className="text-blue-600 text-sm font-medium">30% Selesai</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2.5">
                                 <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: '30%' }}></div>
                             </div>
                         </div>
-                        <div className={`${themes[theme].card} rounded-lg p-6 shadow-md border border-purple-200`}>
+                        <div className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-white'} rounded-lg p-6 shadow-md border ${theme === 'dark' ? 'border-purple-800' : 'border-purple-200'}`}>
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className={`text-lg font-semibold ${themes[theme].text}`}>Mahir</h3>
+                                <h3 className={`text-lg font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}>Mahir</h3>
                                 <span className="text-purple-600 text-sm font-medium">10% Selesai</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2.5">

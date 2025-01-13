@@ -1,104 +1,79 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 
-const ThemeContext = createContext();
+export const ThemeContext = createContext();
 
-export const themes = {
-    light: {
-        background: 'bg-gray-100',
-        text: 'text-gray-700',
-        card: 'bg-white',
-        sidebar: 'bg-white',
-        navbar: 'bg-white/80'
-    },
-    dark: {
-        background: 'bg-gray-900',
-        text: 'text-gray-200',
-        card: 'bg-gray-800',
-        sidebar: 'bg-gray-800',
-        navbar: 'bg-gray-800/80'
-    }
-};
+export const ThemeProvider = ({ children }) => {
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+    const [themeColor, setThemeColor] = useState(localStorage.getItem('themeColor') || 'blue');
+    
+    const getThemeGradients = useCallback((color) => {
+        const gradients = {
+            blue: {
+                start: '#1E40AF',
+                end: '#3B82F6',
+                solid: '#2563EB'
+            },
+            green: {
+                start: '#047857',
+                end: '#10B981',
+                solid: '#059669'
+            },
+            purple: {
+                start: '#6D28D9',
+                end: '#8B5CF6',
+                solid: '#7C3AED'
+            },
+            red: {
+                start: '#B91C1C',
+                end: '#EF4444',
+                solid: '#DC2626'
+            }
+        };
+        return gradients[color] || gradients.blue;
+    }, []);
 
-export const colorSchemes = {
-    default: {
-        primary: 'from-blue-600 to-blue-800',
-        secondary: 'from-blue-400 to-blue-600',
-        accent: 'text-blue-600'
-    },
-    galaxy: {
-        primary: 'from-purple-600 to-indigo-800',
-        secondary: 'from-purple-400 to-indigo-600',
-        accent: 'text-purple-600'
-    },
-    ocean: {
-        primary: 'from-cyan-600 to-blue-800',
-        secondary: 'from-cyan-400 to-blue-600',
-        accent: 'text-cyan-600'
-    },
-    sunset: {
-        primary: 'from-orange-600 to-red-800',
-        secondary: 'from-orange-400 to-red-600',
-        accent: 'text-orange-600'
-    },
-    forest: {
-        primary: 'from-green-600 to-emerald-800',
-        secondary: 'from-green-400 to-emerald-600',
-        accent: 'text-green-600'
-    }
-};
-
-export function ThemeProvider({ children }) {
-    const [theme, setTheme] = useState(() => {
-        const savedTheme = localStorage.getItem('theme');
-        return savedTheme || 'light';
-    });
-
-    const [colorScheme, setColorScheme] = useState(() => {
-        const savedColorScheme = localStorage.getItem('colorScheme');
-        return savedColorScheme || 'default';
-    });
-
-    useEffect(() => {
-        localStorage.setItem('theme', theme);
-        if (theme === 'dark') {
+    const applyTheme = useCallback((newTheme, newColor) => {
+        // Handle dark/light theme
+        if (newTheme === 'dark') {
             document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
         } else {
             document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
         }
-    }, [theme]);
 
+        // Handle theme color
+        const gradients = getThemeGradients(newColor);
+        document.documentElement.style.setProperty('--gradient-start', gradients.start);
+        document.documentElement.style.setProperty('--gradient-end', gradients.end);
+        document.documentElement.style.setProperty('--theme-color', gradients.solid);
+    }, [getThemeGradients]);
+
+    // Initial theme application
     useEffect(() => {
-        localStorage.setItem('colorScheme', colorScheme);
-    }, [colorScheme]);
+        applyTheme(theme, themeColor);
+    }, []);
 
-    const toggleTheme = () => {
-        setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-    };
+    const handleThemeChange = useCallback((newTheme) => {
+        setTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+        applyTheme(newTheme, themeColor);
+    }, [themeColor, applyTheme]);
 
-    const changeColorScheme = (newScheme) => {
-        setColorScheme(newScheme);
-    };
-
-    const value = {
-        theme,
-        colorScheme,
-        toggleTheme,
-        changeColorScheme,
-        themes,
-        colorSchemes
-    };
+    const handleColorChange = useCallback((newColor) => {
+        setThemeColor(newColor);
+        localStorage.setItem('themeColor', newColor);
+        applyTheme(theme, newColor);
+    }, [theme, applyTheme]);
 
     return (
-        <ThemeContext.Provider value={value}>
+        <ThemeContext.Provider value={{ 
+            theme, 
+            themeColor, 
+            setTheme: handleThemeChange,
+            setThemeColor: handleColorChange
+        }}>
             {children}
         </ThemeContext.Provider>
     );
-}
-
-export function useTheme() {
-    const context = useContext(ThemeContext);
-    if (context === undefined) {
-        throw new Error('useTheme must be used within a ThemeProvider');
-    }
-    return context;
-} 
+}; 
